@@ -1,0 +1,23 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+right_format = '$git_branch$git_commit$git_state$git_metrics$git_status$cmd_duration'
+
+[line_break]
+disabled = true
+
+[username]
+show_always = true
+
+[git_branch]
+symbol = ' '
+style = 'bright-purple'
+format = '[$symbol$branch(:$remote_branch)]($style) '
+
+[git_status]
+style = 'bold green'
+
+[deno]
+symbol = ' '
