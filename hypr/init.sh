@@ -12,3 +12,4 @@ clipse -listen
 discord &
 thunderbird &
 
+anki &
