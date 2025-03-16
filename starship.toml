@@ -1,4 +1,4 @@
-# Get editor completions based on the config schema
+# Get editor completions based on the config schema, i don't know how to use it?
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
@@ -8,11 +8,26 @@ right_format = '$git_branch$git_commit$git_state$git_metrics$git_status$cmd_dura
 [line_break]
 disabled = true
 
+[character]
+success_symbol = '[\$](bold green)'
+error_symbol = '[X](bold red)'
+vimcmd_symbol = '[N](bold blue)'
+vimcmd_replace_one_symbol = '[r](bold yellow)'
+vimcmd_replace_symbol = '[R](bold purple)'
+vimcmd_visual_symbol = '[v](bold white)'
+
+[status]
+disabled = false
+success_symbol = '0'
+success_style = 'bold green'
+format = '[\($status\)]($style) '
+
 [username]
-show_always = true
+# show_always = true
 
 [hostname]
-ssh_symbol = '\[ssh\] '
+ssh_symbol = '\[ssh\](bold underline bright-yellow) '
+style = 'bold bright-green'
 
 [git_branch]
 symbol = ' '
