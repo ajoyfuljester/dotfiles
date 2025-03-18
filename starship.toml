@@ -22,9 +22,6 @@ success_symbol = '0'
 success_style = 'bold green'
 format = '[\($status\)]($style) '
 
-[username]
-# show_always = true
-
 [hostname]
 ssh_symbol = '\[ssh\](bold underline bright-yellow) '
 style = 'bold bright-green'
