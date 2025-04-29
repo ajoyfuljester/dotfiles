@@ -13,3 +13,5 @@ discord &
 thunderbird &
 
 anki &
+
+sudo -n ip link set wlp0s20f0u4 mode default
