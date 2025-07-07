@@ -1,9 +1,29 @@
+
+$clr-1: #dc1e2e;
+$clr-2: #eb8258;
+$clr-3: #f6f740;
+$clr-4: #fff07c;
+$clr-5: #91e833;
+$clr-6: #61e786;
+$clr-7: #4f84ff;
+$clr-8: #a2d2ff;
+$clr-9: #bc64f7;
+$clr-10: #e086d3;
+$clr-11: #00b594;
+$clr-12: #00f5d4;
+$clr-13: #1c1c1c;
+$clr-14: #282828;
+$clr-15: #505050;
+$clr-16: #fafafa;
+
 window {
-  background-color: #1c1c1c;
-  color: #fafafa;
+  background-color: $clr-13;
+  color: $clr-16;
+
   font-family: monospace;
   font-weight: bold;
 }
+
 
 #command-selector {
   opacity: 0;
@@ -25,29 +45,36 @@ window {
 
 entry {
   transition-duration: 0;
+
   border-radius: 0;
   border: none;
   box-shadow: none;
-  background-color: #e086d3;
-  color: #282828;
-}
-entry:focus {
-  background-color: #282828;
-  color: #e086d3;
+
+  $l-1: $clr-10;
+  $l-2: $clr-14;
+
+  background-color: $l-1;
+  color: $l-2;
+
+  &:focus {
+    background-color: $l-2;
+    color: $l-1;
+  }
 }
 
 label {
   padding: 0 1em;
 }
 
+
 #body > box > box > label {
-  background-color: #f6f740;
-  color: #282828;
+  background-color: $clr-3;
+  color: $clr-14;
   margin-right: -5px;
 }
 
 #body > box > box ~ box > label {
-  background-color: #00f5d4;
+  background-color: $clr-12;
   text-shadow: none;
 }
 
@@ -58,12 +85,14 @@ button {
   text-shadow: none;
   outline: none;
   background-image: none;
+
   transition-duration: 0;
-  background-color: #4f84ff;
-  color: #282828;
+
+  background-color: $clr-7;
+  color: $clr-14;
   padding: 4px 0;
 }
 
 button:focus, button:hover {
-  background-color: #61e786;
+  background-color: $clr-6;
 }

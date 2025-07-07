@@ -16,6 +16,11 @@ vimcmd_replace_one_symbol = '[r](bold yellow)'
 vimcmd_replace_symbol = '[R](bold purple)'
 vimcmd_visual_symbol = '[v](bold white)'
 
+[directory]
+style = 'bold bright-cyan'
+read_only = " [RO]"
+read_only_style = "bold red"
+
 [status]
 disabled = false
 success_symbol = '0'
@@ -33,6 +38,7 @@ format = '[$symbol$branch(:$remote_branch)]($style) '
 
 [git_status]
 style = 'bold green'
+deleted = "X"
 
 [deno]
 symbol = ' '
