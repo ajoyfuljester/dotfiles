@@ -46,11 +46,6 @@ label {
   margin-right: -5px;
 }
 
-#body > box > box ~ box > label {
-  background-color: #00f5d4;
-  text-shadow: none;
-}
-
 button {
   border-radius: 0;
   border: none;
@@ -66,4 +61,20 @@ button {
 
 button:focus, button:hover {
   background-color: #61e786;
+}
+
+#body > box > #command-selector + box > button {
+  margin-right: 0;
+  background-color: #4f84ff;
+}
+#body > box > #command-selector + box > button:hover, #body > box > #command-selector + box > button:focus {
+  background-color: #61e786;
+}
+
+#body > box > box ~ box > button:nth-child(1) {
+  margin-right: -5px;
+  background-color: #eb8258;
+}
+#body > box > box ~ box > button:nth-child(1):hover, #body > box > box ~ box > button:nth-child(1):focus {
+  background-color: #dc1e2e;
 }
