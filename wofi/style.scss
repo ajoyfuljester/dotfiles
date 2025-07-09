@@ -1,0 +1,75 @@
+
+$clr-1: #dc1e2e;
+$clr-2: #eb8258;
+$clr-3: #f6f740;
+$clr-4: #fff07c;
+$clr-5: #91e833;
+$clr-6: #61e786;
+$clr-7: #4f84ff;
+$clr-8: #a2d2ff;
+$clr-9: #bc64f7;
+$clr-10: #e086d3;
+$clr-11: #00b594;
+$clr-12: #00f5d4;
+$clr-13: #1c1c1c;
+$clr-14: #282828;
+$clr-15: #505050;
+$clr-16: #fafafa;
+
+window {
+  background-color: $clr-13;
+  color: $clr-16;
+
+  font-family: monospace;
+  font-weight: bold;
+}
+
+entry {
+  transition-duration: 0;
+
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+
+  $l-1: $clr-10;
+  $l-2: $clr-14;
+
+  background-color: $l-1;
+  color: $l-2;
+
+  &:focus {
+    background-color: $l-2;
+    color: $l-1;
+  }
+}
+
+label {
+  padding: 0 1em;
+}
+
+
+#inner-box > flowboxchild {
+  &:selected {
+    background-color: transparent;
+  }
+
+  &:focus, &:hover {
+    background-color: $clr-12;
+  }
+
+
+  > expander {
+    &:focus, &:hover {
+      background-color: $clr-5;
+
+      box {
+        background-color: $clr-5;
+      }
+
+    }
+
+  }
+
+}
+
+
