@@ -30,6 +30,7 @@ entry {
   box-shadow: none;
   background-color: #e086d3;
   color: #282828;
+  caret-color: #e086d3;
 }
 entry:focus {
   background-color: #282828;
@@ -44,6 +45,11 @@ label {
   background-color: #f6f740;
   color: #282828;
   margin-right: -5px;
+}
+
+#body > box > box ~ box > label {
+  background-color: transparent;
+  color: #282828;
 }
 
 button {

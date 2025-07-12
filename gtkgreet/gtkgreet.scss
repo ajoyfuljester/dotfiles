@@ -55,6 +55,7 @@ entry {
 
   background-color: $l-1;
   color: $l-2;
+  caret-color: $l-1;
 
   &:focus {
     background-color: $l-2;
@@ -71,6 +72,12 @@ label {
   background-color: $clr-3;
   color: $clr-14;
   margin-right: -5px;
+}
+
+#body > box > box ~ box > label {
+  background-color: transparent;
+  // does not work
+  color: $clr-14;
 }
 
 
