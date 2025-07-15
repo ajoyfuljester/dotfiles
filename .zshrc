@@ -31,5 +31,6 @@ alias ls='ls --color'
 alias ll='ls -al'
 alias Freessh='$HOME/freessh/start.sh'
 alias Wall='/usr/bin/ping 192.168.0.25'
+alias :q='exit'
 
 export PATH="$PATH:$HOME/.local/bin"
