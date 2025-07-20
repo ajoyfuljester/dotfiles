@@ -1,0 +1,156 @@
+@use "./colors.scss" as *;
+
+
+
+@use "sass:color";
+
+
+.bar {
+
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 18px;
+
+  background-color: $clr-13;
+
+
+
+  button {
+    background-image: none;
+    border: none;
+    text-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+
+    padding: 0.2em 0.4em;
+
+    transition-duration: 0;
+
+    &.focused {
+      color: $clr-13;
+
+    }
+  }
+
+
+
+
+}
+
+.bg-16 {
+  background-color: $clr-4;
+}
+
+
+
+
+
+
+
+// TODO: delete this, only for preview
+
+
+$bg: #212223;
+$fg: #f1f1f1;
+$accent: #378DF7;
+$radius: 7px;
+
+window.Bar {
+    border: none;
+    box-shadow: none;
+    background-color: $bg;
+    color: $fg;
+    font-size: 1.1em;
+    font-weight: bold;
+
+    label {
+        margin: 0 8px;
+    }
+
+    .Workspaces  {
+        button {
+            all: unset;
+            background-color: transparent;
+
+            &:hover label {
+                background-color: color.adjust($fg, $alpha: -0.84);
+                border-color: color.adjust($accent, $alpha: -0.8);
+            }
+
+            &:active label {
+                background-color: color.adjust($fg, $alpha: -0.8)
+            }
+        }
+
+        label {
+            transition: 200ms;
+            padding: 0 8px;
+            margin: 2px;
+            border-radius: $radius;
+            border: 1pt solid transparent;
+        }
+
+        .focused label {
+            color: $accent;
+            border-color: $accent;
+        }
+    }
+
+    .SysTray {
+        margin-right: 8px;
+
+        button {
+            padding: 0 4px;
+        }
+    }
+
+    .FocusedClient {
+        color: $accent;
+    }
+
+    .Media .Cover {
+        min-height: 1.2em;
+        min-width: 1.2em;
+        border-radius: $radius;
+        background-position: center;
+        background-size: contain;
+    }
+
+    .Battery label {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .AudioSlider {
+        * {
+            all: unset;
+        }
+
+        icon {
+            margin-right: .6em;
+        }
+
+        & {
+            margin: 0 1em;
+        }
+
+        trough {
+            background-color: color.adjust($fg, $alpha: -0.8);
+            border-radius: $radius;
+        }
+
+        highlight {
+            background-color: $accent;
+            min-height: .8em;
+            border-radius: $radius;
+        }
+
+        slider {
+            background-color: $fg;
+            border-radius: $radius;
+            min-height: 1em;
+            min-width: 1em;
+            margin: -.2em;
+        }
+    }
+}
