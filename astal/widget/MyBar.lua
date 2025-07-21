@@ -4,6 +4,7 @@ local GLib = astal.require("GLib")
 local Widget = require("astal.gtk3.widget")
 local Hyprland = astal.require("AstalHyprland")
 local Tray = astal.require("AstalTray")
+local Wp = astal.require("AstalWp")
 local bind = astal.bind
 local map = require("lib").map
 
@@ -96,6 +97,51 @@ local function ElementSystray()
 	})
 end
 
+local dozenalAlphabet = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b"}
+local function toDozenalString(n, pad)
+	n = n // 1
+	local doz = ""
+	while n ~= 0 do
+		doz = doz .. dozenalAlphabet[(n % 12) + 1]
+		n = n // 12
+	end
+	doz = string.reverse(doz)
+	local charsLeft = pad - #doz
+	for _ = 1, charsLeft do
+		doz = '0' .. doz
+	end
+	doz = "0z" .. doz
+	return doz
+end
+
+local function ElementRadio()
+	local speaker = Wp.get_default().audio.default_speaker
+
+
+	return Widget.Box({
+		-- css = "min-width: 200px;",
+		class_name = "audio",
+		-- Widget.Slider({
+		-- 	hexpand = true,
+		-- 	on_dragged = function(self) speaker.volume = self.value end,
+		-- 	value = bind(speaker, "volume"),
+		-- }),
+		Widget.Label({
+			class_name = bind(speaker, "mute"):as(function(m)
+				return m and "muted" or ""
+			end),
+			label = bind(speaker, "mute"):as(function(m)
+				return m and "X: " or "V: "
+			end),
+		}),
+		Widget.Label({
+			label = bind(speaker, "volume"):as(function(v)
+				return toDozenalString(v * 100, 3)
+			end),
+		}),
+	})
+end
+
 return function(gdkmonitor)
 	local Anchor = astal.require("Astal").WindowAnchor
 
@@ -115,6 +161,7 @@ return function(gdkmonitor)
 			}),
 			Widget.Box({
 				halign = "END",
+				ElementRadio(),
 				ElementSystray(),
 			}),
 		}),
