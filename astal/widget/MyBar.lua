@@ -27,6 +27,23 @@ for _ = 1, numberOfColors do
 	table.insert(shuffledPaleColors, pc)
 end
 
+local function getValueFromTable(t, i)
+	return t[(i % #t) + 1]
+end
+
+local lastColor = 0
+local function getPrevPaleColor()
+	lastColor = lastColor - 1
+	return shuffledPaleColors[(lastColor % numberOfColors) + 1]
+end
+
+local function colorString(t, index, prefix)
+	return string.format("%s%s", prefix, getValueFromTable(t, index))
+end
+
+local function getPrevPaleString(prefix)
+	return prefix .. tostring(getPrevPaleColor())
+end
 
 
 local function ElementWorkspaces()
@@ -38,28 +55,27 @@ local function ElementWorkspaces()
 			table.sort(wss, function(a, b) return a.id < b.id end)
 
 			return map(wss, function(ws, i)
-					return Widget.Button({
-						class_name = bind(hypr, "focused-workspace"):as(
-							function(fw)
-								if fw == ws then
-									return string.format("focused bg-%s", shuffledBoldColors[i % numberOfColors])
-								end
-								return string.format("fg-%s", shuffledPaleColors[i % numberOfColors])
+				return Widget.Button({
+					class_name = bind(hypr, "focused-workspace"):as(
+						function(fw)
+							if fw == ws then
+								return "focused " .. colorString(shuffledBoldColors, i, "bg-")
 							end
-						),
-						on_clicked = function() ws:focus() end,
-						label = bind(ws, "id"):as(
-							function(v)
-								return type(v) == "number"
-										and string.format("%.0f", v)
-									or v
-							end
-						),
-					})
+							return colorString(shuffledPaleColors, i, "fg-")
+						end
+					),
+					on_clicked = function() ws:focus() end,
+					label = bind(ws, "id"):as(
+						function(v)
+							return type(v) == "number" and string.format("%.0f", v) or v
+						end
+					),
+				})
 			end)
 		end),
 	})
 end
+
 
 local function ElementTime(format)
 	local time = Variable(""):poll(
@@ -78,7 +94,7 @@ local function ElementSystray()
 	local tray = Tray.get_default()
 
 	return Widget.Box({
-		class_name = "SysTray",
+		class_name = "systray " .. "bg-14",
 		bind(tray, "items"):as(function(items)
 			return map(items, function(item)
 				return Widget.MenuButton({
@@ -114,31 +130,53 @@ local function toDozenalString(n, pad)
 	return doz
 end
 
-local function ElementRadio()
+local function ElementAudio()
 	local speaker = Wp.get_default().audio.default_speaker
 
 
-	return Widget.Box({
-		-- css = "min-width: 200px;",
-		class_name = "audio",
-		-- Widget.Slider({
-		-- 	hexpand = true,
-		-- 	on_dragged = function(self) speaker.volume = self.value end,
-		-- 	value = bind(speaker, "volume"),
-		-- }),
-		Widget.Label({
-			class_name = bind(speaker, "mute"):as(function(m)
-				return m and "muted" or ""
-			end),
-			label = bind(speaker, "mute"):as(function(m)
-				return m and "X: " or "V: "
-			end),
-		}),
-		Widget.Label({
-			label = bind(speaker, "volume"):as(function(v)
-				return toDozenalString(v * 100, 3)
-			end),
-		}),
+	return Widget.Button({
+		class_name = bind(speaker, "mute"):as(function(m)
+			local classes = "audio "
+			return classes .. (m and "muted" or "")
+		end),
+		on_scroll = function(_, event)
+			-- print('scrollSensitivity', direction.delta_y) -- prints 1.5
+			-- scrolling down is a positive delta_y
+			speaker.volume = speaker.volume - (event.delta_y / 1.5 / 100)
+		end,
+		Widget.Box({
+			Widget.Label({
+				label = bind(speaker, "mute"):as(function(m)
+					return m and "m: " or "v: "
+				end),
+			}),
+			Widget.Label({
+				label = bind(speaker, "volume"):as(function(v)
+					return toDozenalString(v * 100, 3)
+				end),
+			}),
+		})
+	})
+end
+
+local function ElementMemory()
+	local availableMemory = Variable(""):poll(
+		3000,
+		[[bash -c -- "free -h | sed -nE 's/Mem:(\s+\S+){5}\s+([0-9\.]+\w+).*/\2/p'"]],
+		function(out)
+			return out
+		end
+	)
+
+
+	return Widget.Label({
+		class_name = "memory " .. getPrevPaleString("bg-"),
+		label = bind(availableMemory):as(function(s)
+			return s or "RIP"
+		end),
+		on_destroy = function()
+			availableMemory:drop()
+		end
 	})
 end
 
@@ -157,12 +195,14 @@ return function(gdkmonitor)
 			}),
 			Widget.Box({
 				halign = "CENTER",
-				ElementTime("%H:%M:%S"),
+				ElementTime("%Y-%m-%d %H:%M:%S"),
 			}),
 			Widget.Box({
 				halign = "END",
-				ElementRadio(),
+				class_name = "info",
 				ElementSystray(),
+				ElementMemory(),
+				ElementAudio(),
 			}),
 		}),
 	})

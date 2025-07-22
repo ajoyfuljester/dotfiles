@@ -13,6 +13,11 @@
 
   background-color: $clr-13;
 
+  .info > * {
+    color: $clr-13;
+    padding: 0 0.6em;
+  }
+
 
 
   button {
@@ -29,6 +34,16 @@
     &.focused {
       color: $clr-13;
 
+    }
+  }
+
+
+  .audio {
+    background-color: $clr-4;
+    color: $clr-13;
+
+    &.muted {
+      background-color: $clr-2;
     }
   }
 
