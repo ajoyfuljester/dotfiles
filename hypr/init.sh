@@ -2,7 +2,12 @@
 
 eject /dev/sr1
 
-waybar &
+bash $XDG_CONFIG_DIRS/hypr/vars.sh
+
+hyprpm reload
+
+# waybar &
+bash $XDG_CONFIG_DIRS/hypr/astal.sh &
 nm-applet &
 
 hyprpaper &
@@ -16,3 +21,4 @@ anki &
 
 sleep 3s
 sudo -n ip link set wlp0s20f0u4 mode default
+

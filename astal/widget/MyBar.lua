@@ -27,9 +27,35 @@ for _ = 1, numberOfColors do
 	table.insert(shuffledPaleColors, pc)
 end
 
+
 local function getValueFromTable(t, i)
-	return t[(i % #t) + 1]
+	return t[((i - 1) % #t) + 1]
 end
+
+
+
+-- TODO: rewrite this in a loop
+local lastBoldColor = getValueFromTable(shuffledBoldColors, numberOfColors)
+
+if (lastBoldColor == 3) or (lastBoldColor == 1) then
+	local bc = table.remove(shuffledBoldColors, numberOfColors - 1)
+	table.insert(shuffledBoldColors, bc)
+	local pc = table.remove(shuffledPaleColors, numberOfColors - 1)
+	table.insert(shuffledPaleColors, pc)
+
+end
+
+lastBoldColor = getValueFromTable(shuffledBoldColors, numberOfColors)
+
+if (lastBoldColor == 3) or (lastBoldColor == 1) then
+	local bc = table.remove(shuffledBoldColors, numberOfColors - 2)
+	table.insert(shuffledBoldColors, bc)
+	local pc = table.remove(shuffledPaleColors, numberOfColors - 2)
+	table.insert(shuffledPaleColors, pc)
+end
+
+
+
 
 local lastColor = 0
 local function getPrevPaleColor()
@@ -186,7 +212,7 @@ return function(gdkmonitor)
 	return Widget.Window({
 		class_name = "bar",
 		gdkmonitor = gdkmonitor,
-		anchor = Anchor.TOP + Anchor.LEFT + Anchor.RIGHT,
+		anchor = Anchor.BOTTOM + Anchor.LEFT + Anchor.RIGHT,
 		exclusivity = "EXCLUSIVE",
 		Widget.CenterBox({
 			Widget.Box({
