@@ -9,70 +9,8 @@ local bind = astal.bind
 local map = require("lib").map
 
 
-local boldColors = {1, 3, 5, 7, 9, 11}
-local paleColors = {2, 4, 6, 8, 10, 12}
-local shuffledBoldColors = {}
-local shuffledPaleColors = {}
 
-if #boldColors ~= #paleColors then
-	error("number of boldColors and paleColors does not match")
-end
-
-local numberOfColors = #boldColors
-for _ = 1, numberOfColors do
-	local i = math.random(1, #boldColors)
-	local bc = table.remove(boldColors, i)
-	table.insert(shuffledBoldColors, bc)
-	local pc = table.remove(paleColors, i)
-	table.insert(shuffledPaleColors, pc)
-end
-
-
-local function getValueFromTable(t, i)
-	return t[((i - 1) % #t) + 1]
-end
-
-
-
--- TODO: rewrite this in a loop
-local lastBoldColor = getValueFromTable(shuffledBoldColors, numberOfColors)
-
-if (lastBoldColor == 3) or (lastBoldColor == 1) then
-	local bc = table.remove(shuffledBoldColors, numberOfColors - 1)
-	table.insert(shuffledBoldColors, bc)
-	local pc = table.remove(shuffledPaleColors, numberOfColors - 1)
-	table.insert(shuffledPaleColors, pc)
-
-end
-
-lastBoldColor = getValueFromTable(shuffledBoldColors, numberOfColors)
-
-if (lastBoldColor == 3) or (lastBoldColor == 1) then
-	local bc = table.remove(shuffledBoldColors, numberOfColors - 2)
-	table.insert(shuffledBoldColors, bc)
-	local pc = table.remove(shuffledPaleColors, numberOfColors - 2)
-	table.insert(shuffledPaleColors, pc)
-end
-
-
-
-
-local lastColor = 0
-local function getPrevPaleColor()
-	lastColor = lastColor - 1
-	return shuffledPaleColors[(lastColor % numberOfColors) + 1]
-end
-
-local function colorString(t, index, prefix)
-	return string.format("%s%s", prefix, getValueFromTable(t, index))
-end
-
-local function getPrevPaleString(prefix)
-	return prefix .. tostring(getPrevPaleColor())
-end
-
-
-local function ElementWorkspaces()
+local function ElementWorkspaces(colors)
 	local hypr = Hyprland.get_default()
 
 	return Widget.Box({
@@ -85,9 +23,9 @@ local function ElementWorkspaces()
 					class_name = bind(hypr, "focused-workspace"):as(
 						function(fw)
 							if fw == ws then
-								return "focused " .. colorString(shuffledBoldColors, i, "bg-")
+								return "focused " .. colors.colorString(colors.shuffledBoldColors, i, "bg-")
 							end
-							return colorString(shuffledPaleColors, i, "fg-")
+							return colors.colorString(colors.shuffledPaleColors, i, "fg-")
 						end
 					),
 					on_clicked = function() ws:focus() end,
@@ -103,7 +41,7 @@ local function ElementWorkspaces()
 end
 
 
-local function ElementTime(format)
+local function ElementTime(_, format)
 	local time = Variable(""):poll(
 		125,
 		function() return GLib.DateTime.new_now_local():format(format) end
@@ -170,6 +108,9 @@ local function ElementAudio()
 			-- scrolling down is a positive delta_y
 			speaker.volume = speaker.volume - (event.delta_y / 1.5 / 100)
 		end,
+		on_clicked = function()
+			speaker.mute = not speaker.mute
+		end,
 		Widget.Box({
 			Widget.Label({
 				label = bind(speaker, "mute"):as(function(m)
@@ -185,7 +126,7 @@ local function ElementAudio()
 	})
 end
 
-local function ElementMemory()
+local function ElementMemory(colors)
 	local availableMemory = Variable(""):poll(
 		3000,
 		[[bash -c -- "free -h | sed -nE 's/Mem:(\s+\S+){5}\s+([0-9\.]+\w+).*/\2/p'"]],
@@ -196,7 +137,7 @@ local function ElementMemory()
 
 
 	return Widget.Label({
-		class_name = "memory " .. getPrevPaleString("bg-"),
+		class_name = "memory " .. colors:getPrevPaleString("bg-"),
 		label = bind(availableMemory):as(function(s)
 			return s or "RIP"
 		end),
@@ -206,7 +147,8 @@ local function ElementMemory()
 	})
 end
 
-return function(gdkmonitor)
+
+return function(gdkmonitor, colors)
 	local Anchor = astal.require("Astal").WindowAnchor
 
 	return Widget.Window({
@@ -217,18 +159,18 @@ return function(gdkmonitor)
 		Widget.CenterBox({
 			Widget.Box({
 				halign = "START",
-				ElementWorkspaces(),
+				ElementWorkspaces(colors),
 			}),
 			Widget.Box({
 				halign = "CENTER",
-				ElementTime("%Y-%m-%d %H:%M:%S"),
+				ElementTime(colors, "%Y-%m-%d %A %H:%M:%S"),
 			}),
 			Widget.Box({
 				halign = "END",
 				class_name = "info",
-				ElementSystray(),
-				ElementMemory(),
-				ElementAudio(),
+				ElementSystray(colors),
+				ElementMemory(colors),
+				ElementAudio(colors),
 			}),
 		}),
 	})
