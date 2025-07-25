@@ -41,7 +41,7 @@ local function ElementWorkspaces(colors)
 end
 
 
-local function ElementTime(_, format)
+local function ElementDateTime(_, format)
 	local time = Variable(""):poll(
 		125,
 		function() return GLib.DateTime.new_now_local():format(format) end
@@ -52,6 +52,28 @@ local function ElementTime(_, format)
 		on_destroy = function() time:drop() end,
 		label = time(),
 	})
+end
+
+
+local function ElementTime(colors)
+	local element = ElementDateTime(colors, "%H:%M:%S")
+	element.class_name = "fg-13 bg-16"
+
+	return element
+end
+
+local function ElementDate(colors)
+	local element = ElementDateTime(colors, "%Y-%m-%d")
+	element.class_name = colors:getPrevPaleString("fg-")
+
+	return element
+end
+
+local function ElementWeekday(colors)
+	local element = ElementDateTime(colors, "%A")
+	element.class_name = colors:getPrevPaleString("fg-")
+
+	return element
 end
 
 local function ElementSystray()
@@ -151,6 +173,9 @@ end
 return function(gdkmonitor, colors)
 	local Anchor = astal.require("Astal").WindowAnchor
 
+
+	local elMemory = ElementMemory(colors)
+
 	return Widget.Window({
 		class_name = "bar",
 		gdkmonitor = gdkmonitor,
@@ -163,13 +188,16 @@ return function(gdkmonitor, colors)
 			}),
 			Widget.Box({
 				halign = "CENTER",
-				ElementTime(colors, "%Y-%m-%d %A %H:%M:%S"),
+				class_name = "datetime",
+				ElementDate(colors),
+				ElementTime(colors),
+				ElementWeekday(colors),
 			}),
 			Widget.Box({
 				halign = "END",
 				class_name = "info",
 				ElementSystray(colors),
-				ElementMemory(colors),
+				elMemory,
 				ElementAudio(colors),
 			}),
 		}),

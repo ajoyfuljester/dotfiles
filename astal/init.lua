@@ -12,7 +12,7 @@ local css = "/tmp/style.css"
 
 astal.exec("sass " .. scss .. " " .. css)
 
-local colors = prepareColors()
+-- local colors = prepareColors()
 
 App:start({
 	instance_name = "lua",
@@ -23,7 +23,8 @@ App:start({
 	end,
 	main = function()
 		for _, mon in pairs(App.monitors) do
-			local c = Utils.tableDeepCopy(colors)
+			local c = prepareColors()
+			-- local c = Utils.tableDeepCopy(colors)
 
 			MyBar(mon, c)
 		end
