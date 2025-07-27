@@ -48,7 +48,6 @@ local function ElementDateTime(_, format)
 	)
 
 	return Widget.Label({
-		class_name = "time",
 		on_destroy = function() time:drop() end,
 		label = time(),
 	})
@@ -70,10 +69,29 @@ local function ElementDate(colors)
 end
 
 local function ElementWeekday(colors)
-	local element = ElementDateTime(colors, "%A")
-	element.class_name = colors:getPrevPaleString("fg-")
 
-	return element
+	local time = Variable(""):poll(
+		125,
+		function()
+
+			local day = GLib.DateTime.new_now_local():format("%A")
+
+			-- makes sure label is as long as the date string, so the clock is properly centered
+			for _ = #day + 1, 10 do
+				day = day .. " "
+			end
+
+
+			return day
+
+		end
+	)
+
+	return Widget.Label({
+		class_name = colors:getPrevPaleString("fg-"),
+		on_destroy = function() time:drop() end,
+		label = time(),
+	})
 end
 
 local function ElementSystray()
