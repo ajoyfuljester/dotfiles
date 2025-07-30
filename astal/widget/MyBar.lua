@@ -9,6 +9,9 @@ local bind = astal.bind
 local map = require("lib").map
 
 
+local ErrorString = "RIP"
+
+
 
 local function ElementWorkspaces(colors)
 	local hypr = Hyprland.get_default()
@@ -42,14 +45,19 @@ end
 
 
 local function ElementDateTime(_, format)
-	local time = Variable(""):poll(
+	local time = Variable({}):poll(
 		125,
-		function() return GLib.DateTime.new_now_local():format(format) end
+		function() return {value = GLib.DateTime.new_now_local():format(format)} end
 	)
 
 	return Widget.Label({
 		on_destroy = function() time:drop() end,
-		label = time(),
+		label = bind(time):as(function(t)
+			if t == nil then
+				return ErrorString
+			end
+			return t.value
+		end),
 	})
 end
 
@@ -70,7 +78,7 @@ end
 
 local function ElementWeekday(colors)
 
-	local time = Variable(""):poll(
+	local time = Variable({}):poll(
 		125,
 		function()
 
@@ -82,7 +90,7 @@ local function ElementWeekday(colors)
 			end
 
 
-			return day
+			return {value = day}
 
 		end
 	)
@@ -90,7 +98,12 @@ local function ElementWeekday(colors)
 	return Widget.Label({
 		class_name = colors:getPrevPaleString("fg-"),
 		on_destroy = function() time:drop() end,
-		label = time(),
+		label = bind(time):as(function(t)
+			if t == nil then
+				return ErrorString
+			end
+			return t.value
+		end),
 	})
 end
 
@@ -167,19 +180,22 @@ local function ElementAudio()
 end
 
 local function ElementMemory(colors)
-	local availableMemory = Variable(""):poll(
+	local availableMemory = Variable({}):poll(
 		3000,
 		[[bash -c -- "free -h | sed -nE 's/Mem:(\s+\S+){5}\s+([0-9\.]+\w+).*/\2/p'"]],
 		function(out)
-			return out
+			return {value = out}
 		end
 	)
 
 
 	return Widget.Label({
 		class_name = "memory " .. colors:getPrevPaleString("bg-"),
-		label = bind(availableMemory):as(function(s)
-			return s or "RIP"
+		label = bind(availableMemory):as(function(t)
+			if t == nil then
+				return ErrorString
+			end
+			return t.value
 		end),
 		on_destroy = function()
 			availableMemory:drop()

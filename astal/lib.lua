@@ -1,4 +1,3 @@
-local Variable = require("astal").Variable
 
 local M = {}
 
@@ -20,6 +19,5 @@ function M.map(array, func)
 	return new_arr
 end
 
-M.date = Variable(""):poll(1000, "date")
 
 return M
