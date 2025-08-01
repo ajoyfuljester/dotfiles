@@ -1,11 +1,10 @@
 local App = require("astal.gtk3.app")
 
-local Bar = require("widget.Bar")
 local MyBar = require("widget.MyBar")
 local astal = require("astal")
 local src = require("lib").src
 local prepareColors = require("colors").prepareColors
-local Utils = require("utils")
+local NotificationPopups = require("widget.NotificationPopups")
 
 local scss = src("mystyle.scss")
 local css = "/tmp/style.css"
@@ -27,6 +26,8 @@ App:start({
 			-- local c = Utils.tableDeepCopy(colors)
 
 			MyBar(mon, c)
+			NotificationPopups(mon)
 		end
 	end,
 })
+
