@@ -7,19 +7,19 @@
 
 window {
   font-family: monospace;
-  background-color: $clr-13;
   font-size: 16px;
 
 }
 
 * {
-  transition-duration: 0;
+  transition: none;
 }
 
 
 .bar {
   font-weight: bold;
   font-size: 18px;
+  background-color: $clr-13;
 
   .info > * {
     color: $clr-13;
@@ -51,47 +51,95 @@ window {
 
 
 .notification-panel {
-  background-color: $clr-13;
+
 
   .notification {
-    border: 4px solid;
+    // border: 4px solid;
     border-top: none;
     border-color: $clr-9;
 
+    background-color: $clr-14;
+    margin-bottom: 1em;
+
 
     &.urgency-low {
-      border-color: $clr-5;
       > .header {
         background-color: $clr-5;
       }
     }
     &.urgency-normal {
-      border-color: $clr-7;
       > .header {
         background-color: $clr-7;
       }
     }
     &.urgency-critical {
-      border-color: $clr-2;
       > .header {
-        background-color: $clr-2;
+        background-color: $clr-1;
       }
     }
+
 
 
     .header {
       font-weight: bold;
-      background-color: $clr-9;
-      > .app-name {
-        margin-left: 2em;
+      background-color: $clr-10;
+      padding: 0 0em;
+      color: $clr-13;
+      > * {
+        margin: 0 0.8em;
       }
-      button {
+      // > .app-name {
+      //   margin: 0em 0.8em;
+      // }
+      // > .wrapper {
+      //   margin: 0em 0.8em;
+      //   margin-right: 0;
+      //
+      //
+      //   > button {
+      //     margin-left: 1em;
+      //     background-color: $clr-1;
+      //     padding: 0 0.5em;
+      //   }
+      // }
+    }
 
-        color: $clr-16;
+    .content {
+        margin: 0.8em;
+      
+      > .image {
+        min-width: 4em;
+        min-height: 4em;
+        margin-right: 1em;
       }
+
+      > .wrapper {
+
+        .summary {
+          font-weight: bold;
+        }
+
+        .body {
+        }
+      }
+    }
+
+
+    .actions button {
+      background-color: $clr-16;
+      color: $clr-13;
     }
   }
 }
+
+
+
+
+.image {
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 
 
 

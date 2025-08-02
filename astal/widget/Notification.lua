@@ -19,10 +19,11 @@ return function(props)
 
 	local header = Widget.Box({
 		class_name = "header",
-		((n.app_icon ~= "") or n.desktop_entry) and Widget.Icon({
-			class_name = "app-icon",
-			icon = icon,
-		}),
+		-- ((n.app_icon ~= "") or n.desktop_entry) and Widget.Icon({
+		-- 	class_name = "app-icon",
+		-- 	icon = icon,
+		-- 	halign = "START",
+		-- }),
 		Widget.Label({
 			class_name = "app-name",
 			halign = "START",
@@ -30,24 +31,26 @@ return function(props)
 		}),
 		Widget.Box({
 			halign = "END",
-			hexpand = true,
+			class_name = "wrapper",
 			Widget.Label({
 				class_name = "time",
 				label = time(n.time),
 			}),
-			Widget.Button({
-				on_clicked = function() n:dismiss() end,
-				Widget.Label({ label = "X" }),
-			}),
+			-- Widget.Button({
+			-- 	on_clicked = function() n:dismiss() end,
+			-- 	Widget.Label({ label = "X" }),
+			-- }),
 		}),
 	})
 
-	print(n.image)
 
 	local body = Widget.Label({
 		class_name = "body",
 		wrap = true,
 		use_markup = true,
+		justify = 0,
+		xalign = 0,
+		yalign = 0.5,
 		label = n.body,
 		height = 100,
 	})
@@ -55,11 +58,13 @@ return function(props)
 	local content = Widget.Box({
 		class_name = "content",
 		(n.image and file_exists(n.image)) and Widget.Box({
-			valign = "START",
+			halign = "START",
 			class_name = "image",
 			css = string.format("background-image: url('%s')", n.image),
+			width = 60,
+			height = 60,
 		}),
-		n.image and is_icon(n.image) and Widget.Box({
+		(n.image and is_icon(n.image)) and Widget.Box({
 			valign = "START",
 			class_name = "icon-image",
 			Widget.Icon({
@@ -68,13 +73,21 @@ return function(props)
 				vexpand = true,
 				halign = "CENTER",
 				valign = "CENTER",
+				width = 100,
+				height = 100,
 			}),
 		}),
 		Widget.Box({
+			class_name = "wrapper",
 			vertical = true,
+			hexpand = true,
+			halign = "START",
 			Widget.Label({
 				class_name = "summary",
 				label = n.summary,
+				xalign = 0,
+				yalign = 0.5,
+				justify = 0,
 			}),
 			body,
 		}),
