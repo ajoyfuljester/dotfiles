@@ -5,7 +5,7 @@ local Notifd = astal.require("AstalNotifd")
 local Notification = require("widget.Notification")
 local timeout = astal.timeout
 
-local TIMEOUT_DELAY = 5000
+local TIMEOUT_DELAY = 12000
 
 local varmap = require("lib").varmap
 local notifd = Notifd.get_default()
@@ -24,12 +24,12 @@ local function NotificationMap()
 				-- in a notification center like widget
 				-- but clicking on the close button will close it
 				on_hover_lost = function() notif_map.delete(id) end,
-				setup = function()
-					timeout(TIMEOUT_DELAY, function()
+				setup = function(delay)
+					timeout(delay or TIMEOUT_DELAY, function()
 						-- uncomment this if you want to "hide" the notifications
 						-- after TIMEOUT_DELAY
 
-						-- notif_map.delete(id)
+						notif_map.delete(id)
 					end)
 				end,
 			})

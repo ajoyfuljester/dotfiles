@@ -12,6 +12,7 @@ local function is_icon(icon) return AstalToo.Icon.lookup_icon(icon) ~= nil end
 return function(props)
 	local n = props.notification
 
+
 	local icon = n.app_icon
 	if icon == "" then
 		icon = n.desktop_entry
@@ -27,11 +28,12 @@ return function(props)
 		Widget.Label({
 			class_name = "app-name",
 			halign = "START",
+			hexpand = true,
 			label = n.app_name or "Unknown",
 		}),
 		Widget.Box({
-			halign = "END",
 			class_name = "wrapper",
+			halign = "END",
 			Widget.Label({
 				class_name = "time",
 				label = time(n.time),
@@ -101,6 +103,7 @@ return function(props)
 			timeout(100, function ()
 				body.height = -1
 			end)
+			props.setup(n.expire_timeout)
 		end,
 		on_hover_lost = props.on_hover_lost,
 		Widget.Box({
