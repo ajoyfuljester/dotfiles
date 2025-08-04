@@ -82,7 +82,8 @@ window {
     .header {
       font-weight: bold;
       background-color: $clr-10;
-      padding: 0 0em;
+      // padding: 0 0em;
+      padding: 0.2em 0.4em;
       color: $clr-13;
       > * {
         margin: 0 0.8em;
@@ -125,6 +126,7 @@ window {
 
 
     .actions button {
+      font-weight: bold;
       background-color: $clr-16;
       color: $clr-13;
     }

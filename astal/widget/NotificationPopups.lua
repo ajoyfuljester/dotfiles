@@ -25,7 +25,10 @@ local function NotificationMap()
 				-- but clicking on the close button will close it
 				on_hover_lost = function() notif_map.delete(id) end,
 				setup = function(delay)
-					timeout(delay or TIMEOUT_DELAY, function()
+					if delay <= 0 then
+						delay = TIMEOUT_DELAY
+					end
+					timeout(delay, function()
 						-- uncomment this if you want to "hide" the notifications
 						-- after TIMEOUT_DELAY
 
