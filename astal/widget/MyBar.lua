@@ -7,6 +7,7 @@ local Tray = astal.require("AstalTray")
 local Wp = astal.require("AstalWp")
 local bind = astal.bind
 local map = require("lib").map
+local Utils = require("utils")
 
 
 local ErrorString = "RIP"
@@ -130,61 +131,13 @@ local function ElementSystray()
 	})
 end
 
-local dozenalAlphabet = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b"}
-local function toDozenalString(n, pad)
-	n = n // 1
-	local doz = ""
-	while n ~= 0 do
-		doz = doz .. dozenalAlphabet[(n % 12) + 1]
-		n = n // 12
-	end
-	doz = string.reverse(doz)
-	local charsLeft = pad - #doz
-	for _ = 1, charsLeft do
-		doz = '0' .. doz
-	end
-	doz = "0z" .. doz
-	return doz
-end
-
-local function ElementAudio()
-	local speaker = Wp.get_default().audio.default_speaker
-
-
-	return Widget.Button({
-		class_name = bind(speaker, "mute"):as(function(m)
-			local classes = "audio "
-			return classes .. (m and "muted" or "")
-		end),
-		on_scroll = function(_, event)
-			-- print('scrollSensitivity', direction.delta_y) -- prints 1.5
-			-- scrolling down is a positive delta_y
-			speaker.volume = speaker.volume - (event.delta_y / 1.5 / 100)
-		end,
-		on_clicked = function()
-			speaker.mute = not speaker.mute
-		end,
-		Widget.Box({
-			Widget.Label({
-				label = bind(speaker, "mute"):as(function(m)
-					return m and "m: " or "v: "
-				end),
-			}),
-			Widget.Label({
-				label = bind(speaker, "volume"):as(function(v)
-					return toDozenalString(v * 100, 3)
-				end),
-			}),
-		})
-	})
-end
 
 local function ElementMemory(colors)
 	local availableMemory = Variable({}):poll(
 		3000,
 		[[bash -c -- "free -h | sed -nE 's/Mem:(\s+\S+){5}\s+([0-9\.]+\w+).*/\2/p'"]],
 		function(out)
-			return {value = out}
+			return {value = out .. "B"}
 		end
 	)
 
@@ -204,11 +157,13 @@ local function ElementMemory(colors)
 end
 
 
-return function(gdkmonitor, colors)
+return function(gdkmonitor, colors, audioMixer)
 	local Anchor = astal.require("Astal").WindowAnchor
 
 
 	local elMemory = ElementMemory(colors)
+	local elAudio = Utils.ElementAudio(colors, Wp.get_default().audio.default_speaker, audioMixer)
+
 
 	return Widget.Window({
 		class_name = "bar",
@@ -230,9 +185,9 @@ return function(gdkmonitor, colors)
 			Widget.Box({
 				halign = "END",
 				class_name = "info",
-				ElementSystray(colors),
+				ElementSystray(),
 				elMemory,
-				ElementAudio(colors),
+				elAudio,
 			}),
 		}),
 	})

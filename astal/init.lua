@@ -5,11 +5,17 @@ local astal = require("astal")
 local src = require("lib").src
 local prepareColors = require("colors").prepareColors
 local NotificationPopups = require("widget.NotificationPopups")
+local AudioMixer = require("widget.AudioMixer")
+local Utils = require("utils")
 
 local scss = src("mystyle.scss")
 local css = "/tmp/style.css"
 
 astal.exec("sass " .. scss .. " " .. css)
+
+
+
+
 
 -- local colors = prepareColors()
 
@@ -24,8 +30,10 @@ App:start({
 		for _, mon in pairs(App.monitors) do
 			local c = prepareColors()
 			-- local c = Utils.tableDeepCopy(colors)
+			local audioMixer = AudioMixer(mon, c)
 
-			MyBar(mon, c)
+			-- NOTE: AudioMixer before Bar, because then volume button is not working
+			MyBar(mon, c, audioMixer)
 			NotificationPopups(mon)
 		end
 	end,
