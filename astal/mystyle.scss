@@ -49,7 +49,6 @@ window {
 
 
   .notification {
-    // border: 4px solid;
     border-top: none;
     border-color: $clr-9;
 
@@ -78,26 +77,11 @@ window {
     .header {
       font-weight: bold;
       background-color: $clr-10;
-      // padding: 0 0em;
       padding: calc(($height - 1em) / 2) 0.4em;
       color: $clr-13;
       > * {
         margin: 0 0.8em;
       }
-      // > .app-name {
-      //   margin: 0em 0.8em;
-      // }
-      // > .wrapper {
-      //   margin: 0em 0.8em;
-      //   margin-right: 0;
-      //
-      //
-      //   > button {
-      //     margin-left: 1em;
-      //     background-color: $clr-1;
-      //     padding: 0 0.5em;
-      //   }
-      // }
     }
 
     .content {
@@ -131,18 +115,14 @@ window {
 .audio-mixer {
   background-color: $clr-14;
 
-  > button {
-    // it can't be above for some reason
-    color: $clr-16;
+  .streams {
 
-    > box {
-      padding: 1.7em 1em;
+    min-height: 300px;
 
-      > box {
-        padding: calc(($height - 1em) / 2) 1em;
-      }
-
+    .message {
+      padding: 0.5em 1em;
     }
+
   }
 
 }

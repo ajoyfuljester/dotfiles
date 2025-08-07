@@ -30,9 +30,13 @@ App:start({
 		for _, mon in pairs(App.monitors) do
 			local c = prepareColors()
 			-- local c = Utils.tableDeepCopy(colors)
-			local audioMixer = AudioMixer(mon, c)
+
+
 
 			-- NOTE: AudioMixer before Bar, because then volume button is not working
+			local audioMixer = AudioMixer(mon, c)
+			-- AudioMixer(mon, c)
+
 			MyBar(mon, c, audioMixer)
 			NotificationPopups(mon)
 		end
