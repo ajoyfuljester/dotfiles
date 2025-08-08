@@ -41,4 +41,8 @@ style = 'bold green'
 deleted = "X"
 
 [deno]
-symbol = ' '
+symbol = '{deno} '
+
+
+[lua]
+symbol = '{Lua} '
