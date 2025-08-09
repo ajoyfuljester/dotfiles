@@ -119,6 +119,11 @@ window {
 
     min-height: 300px;
 
+
+    > .stream > * {
+      margin-bottom: 0.8em;
+    }
+
     .message {
       padding: 0.5em 1em;
     }

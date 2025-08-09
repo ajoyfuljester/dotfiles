@@ -32,13 +32,27 @@ return function(gdkmonitor, colors)
 			for _, stream in ipairs(streams) do
 				table.insert(t,
 					Widget.Box({
+						class_name = "stream",
 						vertical = true,
 						Utils.ElementAudio(colors, stream),
+						Widget.Label({
+							label = stream.description,
+							justify = 2,
+							wrap = true,
+						}),
 						Widget.Label({
 							label = stream.name,
 							justify = 2,
 							wrap = true,
 						}),
+						Widget.Label({
+							label = stream.path,
+							justify = 2,
+							wrap = true,
+						}),
+						-- Widget.Icon({
+						-- 	icon = stream.icon,
+						-- }),
 					})
 				)
 			end
