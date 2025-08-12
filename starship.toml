@@ -42,7 +42,13 @@ deleted = "X"
 
 [deno]
 symbol = '{deno} '
+style = 'green'
 
 
 [lua]
-symbol = '{Lua} '
+symbol = '{lua} '
+style = 'blue'
+
+[golang]
+symbol = '{go} '
+style = 'bright-blue'
