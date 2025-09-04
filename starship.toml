@@ -39,6 +39,7 @@ format = '[$symbol$branch(:$remote_branch)]($style) '
 [git_status]
 style = 'bold green'
 deleted = "X"
+ahead = "^"
 
 [deno]
 symbol = '{deno} '
