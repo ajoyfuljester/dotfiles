@@ -80,6 +80,11 @@ function M.ElementAudio(colors, node, secondaryWidget)
 			-- print('scrollSensitivity', event.delta_y) -- prints 1.5
 			-- scrolling down is a positive delta_y
 
+			-- for some reason it's possible and crashes the program
+			if event == nil then
+				return
+			end
+
 			speaker.volume = speaker.volume - (event.delta_y / 1.5 / 100)
 		end,
 		on_click = function(_, event)
