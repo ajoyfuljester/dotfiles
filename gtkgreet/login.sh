@@ -2,4 +2,5 @@
 
 wlr-randr --output DP-3 --off
 
-gtkgreet -l -s /etc/greetd/gtkgreet.css -c hyprland
+gtkgreet -l -s /etc/greetd/gtkgreet.css -c hyprland || \
+	gtkgreet -s /etc/greetd/gtkgreet.css -c hyprland
