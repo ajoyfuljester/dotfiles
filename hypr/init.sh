@@ -6,8 +6,6 @@ bash $XDG_CONFIG_DIRS/hypr/vars.sh
 
 hyprpm reload
 
-# waybar &
-bash $XDG_CONFIG_DIRS/hypr/astal.sh &
 nm-applet &
 
 hyprpaper &
