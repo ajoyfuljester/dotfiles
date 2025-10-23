@@ -44,11 +44,30 @@ local function ElementWorkspaces(colors)
 	})
 end
 
+-- if more than one, then multiple notifications will probably be sent when a lag occurs
+local maxLagCheckers = 1
+local lagThresholdInSeconds = 6
+
 
 local function ElementDateTime(_, format)
+	local checkerID = maxLagCheckers
+	maxLagCheckers = maxLagCheckers - 1
+
 	local time = Variable({}):poll(
 		125,
-		function() return {value = GLib.DateTime.new_now_local():format(format)} end
+		function(prev)
+			local dt = GLib.DateTime.new_now_local()
+			local timestamp = dt:to_unix()
+			if checkerID > 0 and prev ~= nil and ((timestamp - prev.timestamp) > lagThresholdInSeconds) then
+				-- i'm too lazy to have it printed nicely... even though i already wrote this in my neovim config... i should just copy it...
+				local cmd = string.format("notify-send -a 'System' -u critical 'Lag observed' 'The clock lagged for %d seconds'", timestamp - prev.timestamp)
+				astal.exec_async(cmd)
+			end
+			return {
+				value = dt:format(format),
+				timestamp = timestamp,
+			}
+		end
 	)
 
 	return Widget.Label({
@@ -163,6 +182,7 @@ return function(gdkmonitor, colors, audioMixer)
 
 	local elMemory = ElementMemory(colors)
 	local elAudio = Utils.ElementAudio(colors, Wp.get_default().audio.default_speaker, audioMixer)
+	local elTime = ElementTime(colors)
 
 
 	return Widget.Window({
@@ -179,7 +199,7 @@ return function(gdkmonitor, colors, audioMixer)
 				halign = "CENTER",
 				class_name = "datetime",
 				ElementDate(colors),
-				ElementTime(colors),
+				elTime,
 				ElementWeekday(colors),
 			}),
 			Widget.Box({
