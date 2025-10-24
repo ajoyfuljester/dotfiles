@@ -67,7 +67,7 @@ button {
 }
 
 button:focus, button:hover {
-  background-color: #61e786;
+  background-color: #bc64f7;
 }
 
 #body > box > #command-selector + box > button {
@@ -75,7 +75,7 @@ button:focus, button:hover {
   background-color: #4f84ff;
 }
 #body > box > #command-selector + box > button:hover, #body > box > #command-selector + box > button:focus {
-  background-color: #61e786;
+  background-color: #bc64f7;
 }
 
 #body > box > box ~ box > button:nth-child(1) {
