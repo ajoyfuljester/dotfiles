@@ -77,7 +77,7 @@ window {
     .header {
       font-weight: bold;
       background-color: $clr-10;
-      padding: calc(($height - 1em) / 2) 0.4em;
+      padding: calc(($height - 1em) / 2) 0.2em;
       color: $clr-13;
       > * {
         margin: 0 0.8em;
@@ -120,8 +120,14 @@ window {
     min-height: 300px;
 
 
-    > .stream > * {
-      margin-bottom: 0.8em;
+    > .stream {
+      > label {
+        padding: 0.5em 1em;
+      }
+
+      > * {
+        margin-bottom: 0.8em;
+      }
     }
 
     .message {

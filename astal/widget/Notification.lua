@@ -54,7 +54,7 @@ return function(props)
 		xalign = 0,
 		yalign = 0.5,
 		label = n.body,
-		height = 100,
+		height = 200,
 	})
 
 	local content = Widget.Box({
