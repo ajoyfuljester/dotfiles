@@ -53,3 +53,7 @@ style = 'blue'
 [golang]
 symbol = '{go} '
 style = 'bright-blue'
+
+[python]
+symbol = "{python} "
+style = "green"
